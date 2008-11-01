@@ -156,9 +156,12 @@ module Merb
       # always identified with to_s. The method will return nil in that case (since
       # to_s is the default for objects that do not have identifiers.)
       def identifier_for(obj)
-        return if obj.is_a?(String)    || obj.is_a?(Symbol)     || obj.is_a?(Numeric)  ||
-                  obj.is_a?(TrueClass) || obj.is_a?(FalseClass) || obj.is_a?(NilClass) ||
-                  obj.is_a?(Array)     || obj.is_a?(Hash)
+        return if obj.instance_of?(String)     || obj.instance_of?(Symbol)     || 
+                  obj.instance_of?(Numeric)    || obj.instance_of?(Integer)    || 
+                  obj.instance_of?(Fixnum)     || obj.instance_of?(Float)      ||
+                  obj.instance_of?(Bignum)     || obj.instance_of?(TrueClass)  || 
+                  obj.instance_of?(FalseClass) || obj.instance_of?(NilClass)   ||
+                  obj.instance_of?(Array)      || obj.instance_of?(Hash)
         
         @identifiers.each do |klass, identifier|
           return identifier if obj.is_a?(klass)

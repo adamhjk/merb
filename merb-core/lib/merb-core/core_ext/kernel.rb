@@ -373,7 +373,12 @@ module Kernel
   #
   # @api public
   def extract_options_from_args!(args)
-    args.pop if Hash === args.last
+    last_arg = args.last
+    if last_arg.instance_of?(Hash) || last_arg.instance_of?(Mash)
+      args.pop
+    else
+      nil
+    end
   end
 
   # Checks that the given objects quack like the given conditions.

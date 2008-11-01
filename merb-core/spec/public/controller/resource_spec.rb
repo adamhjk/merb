@@ -8,6 +8,7 @@ describe Merb::Controller, " #resource" do
   class User    < Orm ; end
   class Comment < Orm ; end
   class Forum   < Orm ; end
+  class UserHash < Hash; def id; 1; end; def to_s; 1; end; end
 
   module Namespaced
     class User < Orm ; end
@@ -23,10 +24,13 @@ describe Merb::Controller, " #resource" do
       Merb::Router.prepare do
         identify :id do
           resources :users
+          resources :user_hashes
         end
       end
       
       @user = User.new(:id => 5)
+      @user_hash = UserHash.new()
+      @user_hash[:id] = 1
     end
     
     it "should generate the url for the collection" do
@@ -35,6 +39,10 @@ describe Merb::Controller, " #resource" do
     
     it "should generate the url for a member of the collection" do
       @controller.resource(@user).should == "/users/5"
+    end
+    
+    it "should generate the url for a member of the collection that descends from a Hash" do
+      @controller.resource(@user_hash).should == "/user_hashes/1"
     end
     
     it "should generate the url for a new member" do
